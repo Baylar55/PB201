@@ -155,3 +155,47 @@ public class Program
     }
 }
 ```
+
+### Task 6 :
+**Aşağıdakı kimi görüntü yaratmaq üçün alqoritm yazın. Hər sətirdə rəqəmlərin sayı bir-bir artmalı və fərqli rəqəmlər yazılmalıdır.**
+
+```
+1
+2 3
+4 5 6
+7 8 9 10
+```
+
+```csharp
+
+public class Program
+{
+    public static void Main()
+    {
+        int n = 4;      // n çap etmək istədiyimiz sətirlərin sayıdır
+
+        int number = 1;     // number dəyişəni ədədləri yazdırmaq və artırmaq üçün istifadə olunacaq
+
+        for (int i = 1; i <= n; i++)    // i 1-dən n-ə qədər artırılacaq, n sətirlərin sayıdır. 
+        {
+            for (int j = 1; j <= i; j++)    // j 1-dən i-ə qədər artırılacaq, i sətrin elementlərinin sayıdır
+            {
+                Console.Write(number + " ");    // number dəyişənini yazdırırıq, aralarına boşluq qoyuruq
+                number++;       // number dəyişənini artırırıq
+
+                //izah:
+                // 1-ci sətrin 1-ci elementi yazdırılır, number 1-dən 2-yə artırılır
+                // 2-ci sətrin 1-ci elementi yazdırılır, number 2-dən 3-ə artırılır
+                // 2-ci sətrin 2-ci elementi yazdırılır, number 3-dən 4-ə artırılır
+                // 3-cü sətrin 1-ci elementi yazdırılır, number 4-dən 5-ə artırılır
+                // 3-cü sətrin 2-ci elementi yazdırılır, number 5-dən 6-ya artırılır
+                // 3-cü sətrin 3-cü elementi yazdırılır, number 6-dan 7-ye artırılır
+                // 4-cü sətrin 1-ci elementi yazdırılır, number 7-dən 8-ə artırılır
+                // 4-cü sətrin 2-ci elementi yazdırılır, number 8-dən 9-a artırılır
+                // 4-cü sətrin 3-cü elementi yazdırılır, number 9-dan 10-a artırılır
+            }
+            Console.WriteLine();    // hər sətrin sonunda yeni sətirə keçir
+        }
+    }
+}
+```
