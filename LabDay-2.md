@@ -380,8 +380,8 @@ public class Program
 ### Task 9 :
 **İçərisinə integer arrayi və bir integer alan metodunuz olacaq. Metod içərisinə aldığınız integer sizin hədəf ədədiniz olacaq. Belə ki əgər array içərisində həmin bu hədəf ədədinizə bərabər və ya böyük neçə dənə ədəd varsa onun sayını geriyə qaytaracaq. Məsələn :**
 - **Input : int[] nums = [0,1,2,3,4], int target = 1**
-- **Output : 3**
-- **Izah : 1 ədədinə bərabər və ya ondan böyük 3 ədəd var**
+- **Output : 4**
+- **Izah : 1 ədədinə bərabər və ya ondan böyük 4 ədəd var**
 ---
 - **Input : int[] nums = [5,1,4,2,2], int target = 6**
 - **Output : 0**
