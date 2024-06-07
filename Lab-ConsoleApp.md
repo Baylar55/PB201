@@ -1,6 +1,7 @@
 # Console Application
 
 ### Employee class
+- Id (_statik olaraq artır_)
 - Name
 - Surname
 - Salary
@@ -8,6 +9,7 @@
 - HasBachelorDegree (_ali təhsilinin olub olmadığını göstərir_)
 
 ### Department class
+- Id (_statik olaraq artır_)
 - Name
 - EmployeeLimit (_departmentin ümumi ala biləcəyi işçi sayı_)
 - Budget (_departmentin ümumi büdcəsi_)
