@@ -1082,3 +1082,11 @@ GO
 **3. Hər bir order üçün Total Price-ı tapın. View - da orderİd və TotalPrice görünməlidir.**
 
 **4. Hər bir Employee-nin ümumi nə qədər satış etdiyini tapın. View - da employee id, Fullname, və TotalSalePrice görünməlidir**
+
+**5. Ən çox satılan 5 məhsulu göstərin azalan sırayla. View-da məhsulun adı və satış sayı görünməlidir**
+
+**6. Verdiyi sifarişlərinin dəyəri(Order-in TotalPrice-ı) 150 -dən çox olan müştəriləri tap.**
+
+**7. Ən azı bir sifariş vermiş müştərilərin adlarını göstər.**
+
+**8. Heç bir sifariş vermiyən müştərilərin adlarını göstər.**
