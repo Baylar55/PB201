@@ -1070,3 +1070,15 @@ INSERT INTO OrderDetails VALUES(10443,11,6);
 INSERT INTO OrderDetails VALUES(10443,28,12);
 GO
 ```
+
+
+
+### TASK
+
+**1. Hər bir employee-nin neçə ədəd sifarişi qəbul etdiyini tapın. View - da employeeId, OrderCount, və employee fullname görünməlidir.**
+
+**2. Hər bir order-in ProductName-nə görə Total Price-ni tapın. View - da orderid, ProductName, TotalPrice görünməlidir.**
+
+**3. Hər bir order üçün Total Price-ı tapın. View - da orderİd və TotalPrice görünməlidir.**
+
+**4. Hər bir Employee-nin ümumi nə qədər satış etdiyini tapın. View - da employee id, Fullname, və TotalSalePrice görünməlidir**
