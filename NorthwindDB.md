@@ -1077,16 +1077,123 @@ GO
 
 **1. Hər bir employee-nin neçə ədəd sifarişi qəbul etdiyini tapın. View - da employeeId, OrderCount, və employee fullname görünməlidir.**
 
+```sql
+SELECT 
+  e.EmployeeID, 
+  COUNT(*) as [Order Count], 
+  e.FirstName + ' ' + e.LastName as [Employee Name] 
+FROM 
+  Employees as e 
+  JOIN Orders as o ON o.EmployeeID = e.EmployeeID 
+GROUP BY 
+  e.EmployeeID, 
+  e.FirstName, 
+  e.LastName
+```
+
 **2. Hər bir order-in ProductName-nə görə Total Price-ni tapın. View - da orderid, ProductName, TotalPrice görünməlidir.**
+```sql
+SELECT 
+  od.OrderID, 
+  p.ProductName, 
+  p.Price * od.Quantity as [Total Price] 
+from 
+  OrderDetails as od 
+  JOIN Products as p ON p.ProductID = od.ProductID 
+GROUP BY 
+  od.OrderID, 
+  p.ProductName, 
+  p.Price * od.Quantity
+```
+**və ya**
+```sql
+SELECT 
+    o.OrderID,
+    p.ProductName,
+    SUM(od.Quantity * p.Price) AS TotalPrice
+FROM 
+    OrderDetails od
+JOIN 
+    Products p ON od.ProductID = p.ProductID
+JOIN 
+    Orders o ON od.OrderID = o.OrderID
+GROUP BY 
+    o.OrderID,
+    p.ProductName
+ORDER BY OrderID ASC
+```
 
 **3. Hər bir order üçün Total Price-ı tapın. View - da orderİd və TotalPrice görünməlidir.**
-
+```sql
+SELECT 
+  od.OrderID, 
+  SUM(p.Price * od.Quantity) as [Total Price] 
+from 
+  OrderDetails as od 
+  JOIN Products as p ON p.ProductID = od.ProductID 
+GROUP BY 
+  od.OrderID
+```
 **4. Hər bir Employee-nin ümumi nə qədər satış etdiyini tapın. View - da employee id, Fullname, və TotalSalePrice görünməlidir**
-
+```sql
+SELECT 
+  e.EmployeeID, 
+  SUM(p.Price * od.Quantity) as [Total Sale Price], 
+  e.FirstName + ' ' + e.LastName as [Employee Name] 
+FROM 
+  OrderDetails as od 
+  JOIN Orders as o ON o.OrderID = od.OrderID 
+  JOIN Employees as e ON e.EmployeeID = o.EmployeeID 
+  JOIN Products as p ON od.ProductID = p.ProductID 
+GROUP BY 
+  e.EmployeeID, 
+  e.FirstName, 
+  e.LastName
+```
 **5. Ən çox satılan 5 məhsulu göstərin azalan sırayla. View-da məhsulun adı və satış sayı görünməlidir**
-
-**6. Verdiyi sifarişlərinin dəyəri(Order-in TotalPrice-ı) 150 -dən çox olan müştəriləri tap.**
-
+```sql
+SELECT 
+  TOP 5 p.ProductName, 
+  SUM(od.Quantity) AS SalesNumber 
+FROM 
+  OrderDetails od 
+  JOIN Products p ON od.ProductID = p.ProductID 
+GROUP BY 
+  p.ProductName 
+ORDER BY 
+  SalesNumber DESC;
+```
+**6. Verdiyi sifarişlərinin dəyəri(Order-in TotalPrice-ı) 20000 - dən çox olan müştəriləri tap.**
+```sql
+SELECT 
+  c.CustomerName, 
+  SUM(od.Quantity * p.Price) as 'Total Order Price' 
+FROM 
+  Customers as c 
+  JOIN Orders as o ON o.CustomerID = c.CustomerID 
+  JOIN OrderDetails as od ON od.OrderID = o.OrderID 
+  JOIN Products as p ON p.ProductID = od.ProductID 
+GROUP BY 
+  c.CustomerName 
+HAVING 
+  SUM(od.Quantity * p.Price)> 20000
+```
 **7. Ən azı bir sifariş vermiş müştərilərin adlarını göstər.**
-
+```sql
+SELECT 
+  DISTINCT C.CustomerName 
+FROM 
+  Customers as c 
+  JOIN Orders as o ON o.CustomerID = c.CustomerID
+```
 **8. Heç bir sifariş vermiyən müştərilərin adlarını göstər.**
+```sql
+SELECT 
+  c.CustomerName, 
+  o.OrderID 
+FROM 
+  Customers as c 
+  LEFT JOIN Orders as o ON o.CustomerID = c.CustomerID 
+WHERE 
+  o.OrderID IS NULL
+```
