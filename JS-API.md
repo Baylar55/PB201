@@ -1,7 +1,7 @@
-## JS - API
+# JS - API
 
-### Task 1:
-#### Aşağıdakı api-lərdən istifadə edərək şəhərə görə havanın temperaturunu göstərən mini web app yazın.
+## Task 1:
+### Aşağıdakı api-lərdən istifadə edərək şəhərə görə havanın temperaturunu göstərən mini web app yazın.
 
 ```cs
 https://geocoding-api.open-meteo.com/v1/search?name=${city}
@@ -80,5 +80,129 @@ document.getElementById('getWeatherBtn').addEventListener('click', function() {
                 weatherInfo.innerHTML = "<p>City not found. Please enter a valid city name.</p>";
             }
         })
+});
+```
+
+## Task 2:
+### https://fakestoreapi.com adresindəki api-lərdən istifadə edərək mini web app yazın.Səhifə açıldıqda sol tərəfdə select option hissəsində bütün kateqoriyalar api-dən gəlməlidir. Kateqoriyalardan hansısa biri seçildikdə sadəcə həmin kateqoriyaya uyğun productlar ekranda görünməlidir. Bundan əlavə səhifədə product adına görə search eləmək üçün input olmalıdır. İnput doldurulanda sadəcə həmin value-a və seçilmiş kateqoriyaya görə productlar ekranda görünməlidir.
+
+
+
+#### Index.html faylı aşağıdakı kimi olacaq. Sadəcə js folderinin src-sini düzgün şəkildə verin.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FakeStore Product Catalog</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .product-list {
+            margin-top: 20px;
+        }
+        .product-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .product-item img {
+            width: 50px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FakeStore Product Catalog</h1>
+        <select id="categorySelect">
+            <option value="">Select a category</option>
+        </select>
+        <input type="text" id="filterInput" placeholder="Filter products by name">
+        <div id="productList" class="product-list"></div>
+    </div>
+    <script src="./assets/js/app.js"></script>
+</body>
+</html>
+```
+
+#### app.js faylı aşağıdakı kimi olacaq :
+```js
+const productList = document.getElementById("productList");
+const categorySelect = document.getElementById("categorySelect");
+const filterInput = document.getElementById("filterInput");
+
+//Əvvəlcə bütün kateqoriyaları götürmək üçün fetch istifadə edirik. 
+//Sonra hər bir kateqoriyanı option elementi ilə categorySelect elementinə əlavə edirik. 
+//Əlavə olunan hər bir option elementinin value atributuna həmin kateqoriyanın adını veririk.
+//Value atributuna verdiyimiz adı həmin kateqoriyanın məlumatlarını götürmək üçün istifadə edirik.
+
+fetch("https://fakestoreapi.com/products/categories")
+  .then((res) => res.json())
+  .then((datas) => {
+    datas.forEach((element) => {
+      categorySelect.innerHTML += `
+                <option value="${element}">${element}</option>
+                `;
+    });
+  });
+
+//Aşağıda categorySelect elementinə change eventi əlavə edirik.
+//Bu event işə düşdükdə həmin kateqoriyanın məlumatlarını götürmək üçün fetch istifadə edirik.
+//Burada this.value ilə select elementində seçilmiş kateqoriyanın adını götürürük.
+//Geriyə qayıdan məlumatları json formatına çeviririk və həmin məlumatları productList elementinə əlavə edirik.
+//Daha sonra filterInput elementinə input eventi əlavə edirik. Bu event işə düşdükdə filterInput elementində daxil edilən məlumatı götürürük.
+//İlk öncə filterInput elementində daxil edilən məlumatın boş olub olmadığını yoxlayırıq.
+//Boş deyilsə productList elementini sıfırlayırıq və json məlumatları filter edirik.
+//Filter metodu bir predicate funksiyası qəbul edir və hər bir elementi bu funksiya ilə yoxlayır. Əgər funksiya true qaytardısa həmin elemntlrdən ibarət yeni bir array qaytarır.
+//Sonra arraydəki hər bir element üçün productList elementinə yeni bir div elementi əlavə edirik.
+//Filter metodu əvəzinə fetch sorğusundan geri qayıdan json-u if şərti ilə yoxlayaraq da həmin işi edə bilərik. 
+
+categorySelect.addEventListener("input", function () {
+  fetch(`https://fakestoreapi.com/products/category/${this.value}`)
+    .then((res) => res.json())
+    .then((json) => {
+      productList.innerHTML = "";
+      json.forEach((product) => {
+        productList.innerHTML += `
+                    <div class="product-item">
+                        <img src="${product.image}" alt="Product image">
+                        <p>${product.title} - $${product.price}</p>
+                    </div>
+                `;
+      });
+      filterInput.addEventListener("input", function () {
+        if(filterInput.value!=''){
+            productList.innerHTML='';
+            let products = json.filter((prd) => prd.title.toLowerCase().includes(filterInput.value.trim().toLowerCase()));
+            products.forEach(element => {
+                productList.innerHTML += `
+                <div class="product-item" data-id="${element.id}">
+                    <img src="${element.image}" alt="Product image">
+                    <p>${element.title} - $${element.price}</p>
+                </div>
+            `;
+            });
+            }
+        });
+    });
 });
 ```
